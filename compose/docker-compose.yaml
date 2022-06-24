@@ -19,6 +19,8 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    networks:
+      - internal
     ports:
       - "5432:5432"
 
@@ -32,6 +34,8 @@ services:
       POOL_RECYCLE: ${POOL_RECYCLE:-15}
       JWT_ALG: ${JWT_ALG:-HS256}
       JWT_KEY: ${JWT_KEY}
+    networks:
+      - internal
     depends_on:
       - postgres
     ports:
@@ -47,6 +51,8 @@ services:
       POOL_RECYCLE: ${POOL_RECYCLE:-15}
       JWT_ALG: ${JWT_ALG:-HS256}
       JWT_KEY: ${JWT_KEY}
+    networks:
+      - internal
     depends_on:
       - postgres
     ports:
@@ -61,6 +67,8 @@ services:
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    networks:
+      - internal
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
@@ -68,3 +76,6 @@ services:
       retries: 3
     volumes:
       - "./minio-data:/data"
+
+networks:
+  internal:
