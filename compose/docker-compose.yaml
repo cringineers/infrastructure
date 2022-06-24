@@ -1,0 +1,53 @@
+---
+x-db-env: &db-env
+  DB_USER: ${DB_USER}
+  DB_PASSWORD: ${DB_PASSWORD}
+  DB_NAME: ${DB_NAME}
+  DB_HOST: ${DB_HOST:-postgres}
+  DB_PORT: ${DB_PORT:-5432}
+
+services:
+  # web-ui:
+  #   build: ./web-ui/
+
+  postgres:
+    image: docker.io/postgres:13
+    volumes:
+      - "/dbdata:/var/lib/postgresql/data"
+      - "/api/db.sql:/docker-entrypoint.d/db.sql"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+
+  auth_api:
+    build: ./auth_api/
+    environment:
+      <<: *db-env
+      # WTF?
+      POOL_SIZE: ${POOL_SIZE:-7}
+      POOL_OVERFLOW: ${POOL_OVERFLOW:-5}
+      POOL_RECYCLE: ${POOL_RECYCLE:-15}
+      JWT_ALG: ${JWT_ALG:-HS256}
+      JWT_KEY: ${JWT_KEY}
+    depends_on:
+      - postgres
+    ports:
+      - "5001:5000"
+
+  api:
+    build: ./api
+    environment:
+      <<: *db-env
+      # WTF?
+      POOL_SIZE: ${POOL_SIZE:-7}
+      POOL_OVERFLOW: ${POOL_OVERFLOW:-5}
+      POOL_RECYCLE: ${POOL_RECYCLE:-15}
+      JWT_ALG: ${JWT_ALG:-HS256}
+      JWT_KEY: ${JWT_KEY}
+    depends_on:
+      - postgres
+    ports:
+      - "5000:5000"

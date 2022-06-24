@@ -1,0 +1,6 @@
+[submodule "compose/api"]
+	path = compose/api
+	url = https://github.com/cringineers/api
+[submodule "compose/auth_api"]
+	path = compose/auth_api
+	url = https://github.com/cringineers/auth_api
