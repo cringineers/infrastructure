@@ -13,8 +13,8 @@ services:
   postgres:
     image: docker.io/postgres:13
     volumes:
-      - "/dbdata:/var/lib/postgresql/data"
-      - "/api/db.sql:/docker-entrypoint.d/db.sql"
+      - "./dbdata:/var/lib/postgresql/data"
+      - "./api/db.sql:/docker-entrypoint-initdb.d/db.sql"
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
