@@ -4,3 +4,6 @@
 [submodule "compose/auth_api"]
 	path = compose/auth_api
 	url = https://github.com/cringineers/auth_api
+[submodule "compose/worker"]
+	path = compose/worker
+	url = https://github.com/cringineers/worker
