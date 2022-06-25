@@ -1,0 +1,10 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: python-server-config
+  namespace: tag-system
+data:
+  POOL_SIZE: "7"
+  POOL_OVERFLOW: "5"
+  POOL_RECYCLE: "15"
