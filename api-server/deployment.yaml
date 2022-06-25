@@ -18,7 +18,7 @@ spec:
         app: api-server
     spec:
       containers:
-        - image: cr.yandex/crp2jk54p4m403rhfl0j/api:0.2
+        - image: cr.yandex/crp2jk54p4m403rhfl0j/api:0.52
           name: api-server-instance
           args:
             - "--port"
@@ -27,7 +27,7 @@ spec:
             - containerPort: 5000
           env:
             - name: WORKER_HOST
-              value: http://worker
+              value: http://worker.tag-system:5000
           envFrom:
             - secretRef:
                 name: db-secret
