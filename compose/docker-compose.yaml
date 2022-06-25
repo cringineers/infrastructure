@@ -10,6 +10,16 @@ services:
   # web-ui:
   #   build: ./web-ui/
 
+  nginx:
+    restart: always
+    build: nginx/
+    container_name: nginx
+    networks:
+      - internal
+    ports:
+      - "80:80"
+      - "443:443"
+
   postgres:
     image: docker.io/postgres:13
     volumes:
