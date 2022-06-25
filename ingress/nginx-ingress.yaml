@@ -1,0 +1,62 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  namespace: tag-system
+  annotations:
+    nginx.ingress.kubernetes.io/app-root: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: tagger-system.tech
+      http:
+        paths:
+          - path: /api(/|$)(.*)
+            backend:
+              service:
+                name: api-server
+                port:
+                  number: 5000
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  namespace: minio
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      client_max_body_size 0;
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      chunked_transfer_encoding off;
+      more_set_headers "X-Forwarded-For $http_x_forwarded_for";
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: s3.tagger-system.tech
+      http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 9000
+            pathType: Prefix
+    - host: minio.tagger-system.tech
+      http:
+        paths:
+          - path: /
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 9001
+            pathType: Prefix
