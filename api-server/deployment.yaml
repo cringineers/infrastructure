@@ -18,17 +18,22 @@ spec:
         app: api-server
     spec:
       containers:
-        - image: cr.yandex/crp2jk54p4m403rhfl0j/api:0.1
+        - image: cr.yandex/crp2jk54p4m403rhfl0j/api:0.2
           name: api-server-instance
           args:
             - "--port"
             - "5000"
           ports:
             - containerPort: 5000
+          env:
+            - name: WORKER_HOST
+              value: http://worker
           envFrom:
             - secretRef:
                 name: db-secret
             - secretRef:
                 name: jwt-secret
+            - secretRef:
+                name: s3-secret
             - configMapRef:
                 name: python-server-config
