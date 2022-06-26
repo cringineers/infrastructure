@@ -18,7 +18,7 @@ spec:
         app: web-ui
     spec:
       containers:
-        - image: cr.yandex/crp2jk54p4m403rhfl0j/web:0.4
+        - image: cr.yandex/crp2jk54p4m403rhfl0j/web:0.5
           name: web-ui-instance
           ports:
             - containerPort: 3000
