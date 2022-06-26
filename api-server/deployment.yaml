@@ -18,7 +18,7 @@ spec:
         app: api-server
     spec:
       containers:
-        - image: cr.yandex/crp2jk54p4m403rhfl0j/api:0.52
+        - image: cr.yandex/crp2jk54p4m403rhfl0j/api:0.55
           name: api-server-instance
           args:
             - "--port"
