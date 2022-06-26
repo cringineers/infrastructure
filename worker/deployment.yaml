@@ -1,0 +1,31 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+  namespace: tag-system
+  labels:
+    app: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      namespace: tag-system
+      labels:
+        app: worker
+    spec:
+      nodeSelector:
+        node_type: worker
+      containers:
+        - image: cr.yandex/crp2jk54p4m403rhfl0j/worker:0.3
+          name: worker
+          ports:
+            - containerPort: 5000
+          resources:
+            limits:
+              memory: "2Gi"
+            requests:
+              memory: "1Gi"

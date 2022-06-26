@@ -2,38 +2,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-server
+  name: auth-api-server
   namespace: tag-system
   labels:
-    app: api-server
+    app: auth-api-server
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: api-server
+      app: auth-api-server
   template:
     metadata:
       namespace: tag-system
       labels:
-        app: api-server
+        app: auth-api-server
     spec:
       containers:
-        - image: cr.yandex/crp2jk54p4m403rhfl0j/api:0.56
-          name: api-server-instance
-          args:
-            - "--port"
-            - "5000"
+        - image: cr.yandex/crp2jk54p4m403rhfl0j/auth_api:0.2
+          name: auth-api-instance
           ports:
             - containerPort: 5000
-          env:
-            - name: WORKER_HOST
-              value: http://worker.tag-system:5000
           envFrom:
             - secretRef:
                 name: db-secret
             - secretRef:
                 name: jwt-secret
-            - secretRef:
-                name: s3-secret
             - configMapRef:
                 name: python-server-config
